@@ -29,20 +29,57 @@
 		408783882E160B8E006CD522 /* LlamaParleyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamaParleyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4028960A2E1803DE00379FC1 /* Exceptions for "LlamaParley" folder in "LlamaParley" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Chat/MessageBubble.swift,
+			);
+			target = 4087836E2E160B8D006CD522 /* LlamaParley */;
+		};
+		4028961C2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParley" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LlamaParleyTests/LlamaParleyTests.swift,
+				LlamaParleyUITests/LlamaParleyUITests.swift,
+				LlamaParleyUITests/LlamaParleyUITestsLaunchTests.swift,
+			);
+			target = 4087836E2E160B8D006CD522 /* LlamaParley */;
+		};
+		4028961D2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParleyTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LlamaParleyTests/LlamaParleyTests.swift,
+			);
+			target = 4087837D2E160B8E006CD522 /* LlamaParleyTests */;
+		};
+		4028961E2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParleyUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LlamaParleyUITests/LlamaParleyUITests.swift,
+				LlamaParleyUITests/LlamaParleyUITestsLaunchTests.swift,
+			);
+			target = 408783872E160B8E006CD522 /* LlamaParleyUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		408783712E160B8D006CD522 /* LlamaParley */ = {
+		402895FE2E1803DE00379FC1 /* LlamaParley */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4028960A2E1803DE00379FC1 /* Exceptions for "LlamaParley" folder in "LlamaParley" target */,
+			);
 			path = LlamaParley;
 			sourceTree = "<group>";
 		};
-		408783812E160B8E006CD522 /* LlamaParleyTests */ = {
+		402896132E18060100379FC1 /* Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LlamaParleyTests;
-			sourceTree = "<group>";
-		};
-		4087838B2E160B8E006CD522 /* LlamaParleyUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LlamaParleyUITests;
+			exceptions = (
+				4028961C2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParley" target */,
+				4028961D2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParleyTests" target */,
+				4028961E2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParleyUITests" target */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,9 +112,8 @@
 		408783662E160B8D006CD522 = {
 			isa = PBXGroup;
 			children = (
-				408783712E160B8D006CD522 /* LlamaParley */,
-				408783812E160B8E006CD522 /* LlamaParleyTests */,
-				4087838B2E160B8E006CD522 /* LlamaParleyUITests */,
+				402895FE2E1803DE00379FC1 /* LlamaParley */,
+				402896132E18060100379FC1 /* Tests */,
 				408783702E160B8D006CD522 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -108,7 +144,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				408783712E160B8D006CD522 /* LlamaParley */,
+				402895FE2E1803DE00379FC1 /* LlamaParley */,
+				402896132E18060100379FC1 /* Tests */,
 			);
 			name = LlamaParley;
 			packageProductDependencies = (
@@ -130,9 +167,6 @@
 			dependencies = (
 				408783802E160B8E006CD522 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				408783812E160B8E006CD522 /* LlamaParleyTests */,
-			);
 			name = LlamaParleyTests;
 			packageProductDependencies = (
 			);
@@ -152,9 +186,6 @@
 			);
 			dependencies = (
 				4087838A2E160B8E006CD522 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				4087838B2E160B8E006CD522 /* LlamaParleyUITests */,
 			);
 			name = LlamaParleyUITests;
 			packageProductDependencies = (
