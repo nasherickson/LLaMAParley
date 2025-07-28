@@ -15,7 +15,7 @@ struct EmptyConversationView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 60, height: 60)
-                .foregroundColor(.gray)
+                .foregroundColor(.yellow)
             Text("No conversations yet")
                 .font(.title3)
                 .foregroundColor(.secondary)

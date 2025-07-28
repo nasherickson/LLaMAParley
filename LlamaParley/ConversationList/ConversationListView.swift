@@ -8,6 +8,7 @@ import SwiftUI
 import SwiftData
 
 struct ConversationListView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query private var conversations: [Conversation]
     var onSelect: (Conversation) -> Void
     
@@ -23,6 +24,15 @@ struct ConversationListView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
+            }
+        }
+        .onAppear {
+            if conversations.isEmpty {
+                let mockConversation = Conversation(title: "Mock Chat", conversationDescription: "Just testing things.")
+                modelContext.insert(mockConversation)
+                modelContext.insert(Message(text: "This is a preloaded assistant message.", isUser: false, conversation: mockConversation))
+                modelContext.insert(Message(text: "Here’s a user reply in the mock convo!", isUser: true, conversation: mockConversation))
+                try? modelContext.save()
             }
         }
     }

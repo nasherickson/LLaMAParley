@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4089B2D62E1D162D003A3FDD /* PostgresNIO in Frameworks */ = {isa = PBXBuildFile; productRef = 4089B2D52E1D162D003A3FDD /* PostgresNIO */; };
+		40E340602E315AF5003859E5 /* LlamaDBTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E3405F2E315AAD003859E5 /* LlamaDBTest.swift */; };
+		40F0EBE12E21649F00561383 /* Fluent in Frameworks */ = {isa = PBXBuildFile; productRef = 40F0EBE02E21649F00561383 /* Fluent */; };
+		40F0EBE32E2164E100561383 /* LLaMAUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F0EBE22E2164CC00561383 /* LLaMAUser.swift */; };
+		40F0EBEB2E21690B00561383 /* FluentPostgresDriver in Frameworks */ = {isa = PBXBuildFile; productRef = 40F0EBEA2E21690B00561383 /* FluentPostgresDriver */; };
+		40F0EBED2E2292F600561383 /* Timeridle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F0EBEC2E2292EB00561383 /* Timeridle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,42 +33,46 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4087836F2E160B8D006CD522 /* LlamaParley.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LlamaParley.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4087837E2E160B8E006CD522 /* LlamaParleyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamaParleyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		408783882E160B8E006CD522 /* LlamaParleyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamaParleyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4087836F2E160B8D006CD522 /* Llamora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Llamora.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4087837E2E160B8E006CD522 /* LlamoraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		408783882E160B8E006CD522 /* LlamoraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4097B46B2E2C0D3E0020142E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		40E3405F2E315AAD003859E5 /* LlamaDBTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LlamaDBTest.swift; sourceTree = "<group>"; };
+		40F0EBE22E2164CC00561383 /* LLaMAUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLaMAUser.swift; sourceTree = "<group>"; };
+		40F0EBEC2E2292EB00561383 /* Timeridle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeridle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		4028960A2E1803DE00379FC1 /* Exceptions for "LlamaParley" folder in "LlamaParley" target */ = {
+		4028960A2E1803DE00379FC1 /* Exceptions for "LlamaParley" folder in "Llamora" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Chat/MessageBubble.swift,
 			);
-			target = 4087836E2E160B8D006CD522 /* LlamaParley */;
+			target = 4087836E2E160B8D006CD522 /* Llamora */;
 		};
-		4028961C2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParley" target */ = {
+		4028961C2E18060100379FC1 /* Exceptions for "Tests" folder in "Llamora" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				LlamaParleyTests/LlamaParleyTests.swift,
 				LlamaParleyUITests/LlamaParleyUITests.swift,
 				LlamaParleyUITests/LlamaParleyUITestsLaunchTests.swift,
 			);
-			target = 4087836E2E160B8D006CD522 /* LlamaParley */;
+			target = 4087836E2E160B8D006CD522 /* Llamora */;
 		};
-		4028961D2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParleyTests" target */ = {
+		4028961D2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamoraTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				LlamaParleyTests/LlamaParleyTests.swift,
 			);
-			target = 4087837D2E160B8E006CD522 /* LlamaParleyTests */;
+			target = 4087837D2E160B8E006CD522 /* LlamoraTests */;
 		};
-		4028961E2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParleyUITests" target */ = {
+		4028961E2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamoraUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				LlamaParleyUITests/LlamaParleyUITests.swift,
 				LlamaParleyUITests/LlamaParleyUITestsLaunchTests.swift,
 			);
-			target = 408783872E160B8E006CD522 /* LlamaParleyUITests */;
+			target = 408783872E160B8E006CD522 /* LlamoraUITests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -71,7 +80,7 @@
 		402895FE2E1803DE00379FC1 /* LlamaParley */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				4028960A2E1803DE00379FC1 /* Exceptions for "LlamaParley" folder in "LlamaParley" target */,
+				4028960A2E1803DE00379FC1 /* Exceptions for "LlamaParley" folder in "Llamora" target */,
 			);
 			path = LlamaParley;
 			sourceTree = "<group>";
@@ -79,11 +88,21 @@
 		402896132E18060100379FC1 /* Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				4028961C2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParley" target */,
-				4028961D2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParleyTests" target */,
-				4028961E2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamaParleyUITests" target */,
+				4028961C2E18060100379FC1 /* Exceptions for "Tests" folder in "Llamora" target */,
+				4028961D2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamoraTests" target */,
+				4028961E2E18060100379FC1 /* Exceptions for "Tests" folder in "LlamoraUITests" target */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		40F0EBE52E21654B00561383 /* NewLlamaItems */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NewLlamaItems;
+			sourceTree = "<group>";
+		};
+		40F0EBEE2E22937F00561383 /* Sources  */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Sources ";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -93,6 +112,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40F0EBEB2E21690B00561383 /* FluentPostgresDriver in Frameworks */,
+				40F0EBE12E21649F00561383 /* Fluent in Frameworks */,
 				4089B2D62E1D162D003A3FDD /* PostgresNIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -117,6 +138,12 @@
 		408783662E160B8D006CD522 = {
 			isa = PBXGroup;
 			children = (
+				40E3405F2E315AAD003859E5 /* LlamaDBTest.swift */,
+				4097B46B2E2C0D3E0020142E /* Info.plist */,
+				40F0EBEE2E22937F00561383 /* Sources  */,
+				40F0EBEC2E2292EB00561383 /* Timeridle.swift */,
+				40F0EBE52E21654B00561383 /* NewLlamaItems */,
+				40F0EBE22E2164CC00561383 /* LLaMAUser.swift */,
 				402895FE2E1803DE00379FC1 /* LlamaParley */,
 				402896132E18060100379FC1 /* Tests */,
 				408783702E160B8D006CD522 /* Products */,
@@ -126,9 +153,9 @@
 		408783702E160B8D006CD522 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4087836F2E160B8D006CD522 /* LlamaParley.app */,
-				4087837E2E160B8E006CD522 /* LlamaParleyTests.xctest */,
-				408783882E160B8E006CD522 /* LlamaParleyUITests.xctest */,
+				4087836F2E160B8D006CD522 /* Llamora.app */,
+				4087837E2E160B8E006CD522 /* LlamoraTests.xctest */,
+				408783882E160B8E006CD522 /* LlamoraUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -136,9 +163,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4087836E2E160B8D006CD522 /* LlamaParley */ = {
+		4087836E2E160B8D006CD522 /* Llamora */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 408783922E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamaParley" */;
+			buildConfigurationList = 408783922E160B8E006CD522 /* Build configuration list for PBXNativeTarget "Llamora" */;
 			buildPhases = (
 				4087836B2E160B8D006CD522 /* Sources */,
 				4087836C2E160B8D006CD522 /* Frameworks */,
@@ -151,18 +178,22 @@
 			fileSystemSynchronizedGroups = (
 				402895FE2E1803DE00379FC1 /* LlamaParley */,
 				402896132E18060100379FC1 /* Tests */,
+				40F0EBE52E21654B00561383 /* NewLlamaItems */,
+				40F0EBEE2E22937F00561383 /* Sources  */,
 			);
-			name = LlamaParley;
+			name = Llamora;
 			packageProductDependencies = (
 				4089B2D52E1D162D003A3FDD /* PostgresNIO */,
+				40F0EBE02E21649F00561383 /* Fluent */,
+				40F0EBEA2E21690B00561383 /* FluentPostgresDriver */,
 			);
 			productName = LlamaParley;
-			productReference = 4087836F2E160B8D006CD522 /* LlamaParley.app */;
+			productReference = 4087836F2E160B8D006CD522 /* Llamora.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4087837D2E160B8E006CD522 /* LlamaParleyTests */ = {
+		4087837D2E160B8E006CD522 /* LlamoraTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 408783952E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamaParleyTests" */;
+			buildConfigurationList = 408783952E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamoraTests" */;
 			buildPhases = (
 				4087837A2E160B8E006CD522 /* Sources */,
 				4087837B2E160B8E006CD522 /* Frameworks */,
@@ -173,16 +204,16 @@
 			dependencies = (
 				408783802E160B8E006CD522 /* PBXTargetDependency */,
 			);
-			name = LlamaParleyTests;
+			name = LlamoraTests;
 			packageProductDependencies = (
 			);
 			productName = LlamaParleyTests;
-			productReference = 4087837E2E160B8E006CD522 /* LlamaParleyTests.xctest */;
+			productReference = 4087837E2E160B8E006CD522 /* LlamoraTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		408783872E160B8E006CD522 /* LlamaParleyUITests */ = {
+		408783872E160B8E006CD522 /* LlamoraUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 408783982E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamaParleyUITests" */;
+			buildConfigurationList = 408783982E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamoraUITests" */;
 			buildPhases = (
 				408783842E160B8E006CD522 /* Sources */,
 				408783852E160B8E006CD522 /* Frameworks */,
@@ -193,11 +224,11 @@
 			dependencies = (
 				4087838A2E160B8E006CD522 /* PBXTargetDependency */,
 			);
-			name = LlamaParleyUITests;
+			name = LlamoraUITests;
 			packageProductDependencies = (
 			);
 			productName = LlamaParleyUITests;
-			productReference = 408783882E160B8E006CD522 /* LlamaParleyUITests.xctest */;
+			productReference = 408783882E160B8E006CD522 /* LlamoraUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -223,7 +254,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4087836A2E160B8D006CD522 /* Build configuration list for PBXProject "LlamaParley" */;
+			buildConfigurationList = 4087836A2E160B8D006CD522 /* Build configuration list for PBXProject "Llamora" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -234,15 +265,17 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				4089B2D42E1D162D003A3FDD /* XCRemoteSwiftPackageReference "postgres-nio" */,
+				40F0EBDF2E21649F00561383 /* XCRemoteSwiftPackageReference "fluent" */,
+				40F0EBE92E21690B00561383 /* XCRemoteSwiftPackageReference "fluent-postgres-driver" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 408783702E160B8D006CD522 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4087836E2E160B8D006CD522 /* LlamaParley */,
-				4087837D2E160B8E006CD522 /* LlamaParleyTests */,
-				408783872E160B8E006CD522 /* LlamaParleyUITests */,
+				4087836E2E160B8D006CD522 /* Llamora */,
+				4087837D2E160B8E006CD522 /* LlamoraTests */,
+				408783872E160B8E006CD522 /* LlamoraUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -276,6 +309,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40F0EBE32E2164E100561383 /* LLaMAUser.swift in Sources */,
+				40E340602E315AF5003859E5 /* LlamaDBTest.swift in Sources */,
+				40F0EBED2E2292F600561383 /* Timeridle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,12 +334,12 @@
 /* Begin PBXTargetDependency section */
 		408783802E160B8E006CD522 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4087836E2E160B8D006CD522 /* LlamaParley */;
+			target = 4087836E2E160B8D006CD522 /* Llamora */;
 			targetProxy = 4087837F2E160B8E006CD522 /* PBXContainerItemProxy */;
 		};
 		4087838A2E160B8E006CD522 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4087836E2E160B8D006CD522 /* LlamaParley */;
+			target = 4087836E2E160B8D006CD522 /* Llamora */;
 			targetProxy = 408783892E160B8E006CD522 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -501,7 +537,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LlamaParley.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LlamaParley";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Llamora.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Llamora";
 			};
 			name = Debug;
 		};
@@ -520,7 +556,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LlamaParley.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LlamaParley";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Llamora.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Llamora";
 			};
 			name = Release;
 		};
@@ -561,7 +597,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4087836A2E160B8D006CD522 /* Build configuration list for PBXProject "LlamaParley" */ = {
+		4087836A2E160B8D006CD522 /* Build configuration list for PBXProject "Llamora" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				408783902E160B8E006CD522 /* Debug */,
@@ -570,7 +606,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		408783922E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamaParley" */ = {
+		408783922E160B8E006CD522 /* Build configuration list for PBXNativeTarget "Llamora" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				408783932E160B8E006CD522 /* Debug */,
@@ -579,7 +615,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		408783952E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamaParleyTests" */ = {
+		408783952E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamoraTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				408783962E160B8E006CD522 /* Debug */,
@@ -588,7 +624,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		408783982E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamaParleyUITests" */ = {
+		408783982E160B8E006CD522 /* Build configuration list for PBXNativeTarget "LlamoraUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				408783992E160B8E006CD522 /* Debug */,
@@ -608,6 +644,22 @@
 				minimumVersion = 1.26.2;
 			};
 		};
+		40F0EBDF2E21649F00561383 /* XCRemoteSwiftPackageReference "fluent" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/fluent.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.12.0;
+			};
+		};
+		40F0EBE92E21690B00561383 /* XCRemoteSwiftPackageReference "fluent-postgres-driver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/fluent-postgres-driver.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -615,6 +667,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4089B2D42E1D162D003A3FDD /* XCRemoteSwiftPackageReference "postgres-nio" */;
 			productName = PostgresNIO;
+		};
+		40F0EBE02E21649F00561383 /* Fluent */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40F0EBDF2E21649F00561383 /* XCRemoteSwiftPackageReference "fluent" */;
+			productName = Fluent;
+		};
+		40F0EBEA2E21690B00561383 /* FluentPostgresDriver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40F0EBE92E21690B00561383 /* XCRemoteSwiftPackageReference "fluent-postgres-driver" */;
+			productName = FluentPostgresDriver;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

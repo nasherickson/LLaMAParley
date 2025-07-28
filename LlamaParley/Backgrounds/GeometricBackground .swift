@@ -17,17 +17,17 @@ struct GeometricBackground: View {
             ForEach(0..<156) { i in
                 let angle = Angle(degrees: Double(i) * 1)
                 RoundedRectangle(cornerRadius: 69)
-                    .stroke(Color(hex: "#003153").opacity(0.24), lineWidth: 15)
+                    .stroke(Color(hex: "#003153").opacity(0.44), lineWidth: 15)
                     .rotationEffect(angle)
-                    .scaleEffect(0.9)
+                    .scaleEffect(1.2)
             }
             
             ForEach(0..<159) { i in
                 let angle = Angle(degrees: Double(i) * 3)
-                RoundedRectangle(cornerRadius: 69)
+                RoundedRectangle(cornerRadius: 75)
                     .stroke(Color(hex: "#7B1113").opacity(0.1), lineWidth: 20)
                     .rotationEffect(angle)
-                    .scaleEffect(0.7)
+                    .scaleEffect(0.6)
             }
         }
     }

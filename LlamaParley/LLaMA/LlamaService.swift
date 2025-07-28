@@ -18,7 +18,7 @@ class LlamaService {
     static let shared = LlamaService()
     
     private let session = URLSession.shared
-    private let endpoint = URL(string: "http://localhost:11434/api/generate")!
+    private let endpoint = URL(string: "http://100.83.122.44:11434")!
     
     func sendPrompt(_ prompt: String, completion: @escaping (Result<String, Error>) -> Void) {
         var request = URLRequest(url: endpoint)
