@@ -33,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4022D3562E3FE07D003B4F83 /* Llamora-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Llamora-Info.plist"; sourceTree = "<group>"; };
 		4087836F2E160B8D006CD522 /* Llamora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Llamora.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4087837E2E160B8E006CD522 /* LlamoraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		408783882E160B8E006CD522 /* LlamoraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +78,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4022D35C2E3FE2B6003B4F83 /* LLaMA */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LLaMA;
+			sourceTree = "<group>";
+		};
 		402895FE2E1803DE00379FC1 /* LlamaParley */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -138,8 +144,10 @@
 		408783662E160B8D006CD522 = {
 			isa = PBXGroup;
 			children = (
+				4022D3562E3FE07D003B4F83 /* Llamora-Info.plist */,
 				40E3405F2E315AAD003859E5 /* LlamaDBTest.swift */,
 				4097B46B2E2C0D3E0020142E /* Info.plist */,
+				4022D35C2E3FE2B6003B4F83 /* LLaMA */,
 				40F0EBEE2E22937F00561383 /* Sources  */,
 				40F0EBEC2E2292EB00561383 /* Timeridle.swift */,
 				40F0EBE52E21654B00561383 /* NewLlamaItems */,
@@ -176,6 +184,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				4022D35C2E3FE2B6003B4F83 /* LLaMA */,
 				402895FE2E1803DE00379FC1 /* LlamaParley */,
 				402896132E18060100379FC1 /* Tests */,
 				40F0EBE52E21654B00561383 /* NewLlamaItems */,
@@ -476,6 +485,7 @@
 				DEVELOPMENT_TEAM = 5GS6QPBM24;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Llamora-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -504,6 +514,7 @@
 				DEVELOPMENT_TEAM = 5GS6QPBM24;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Llamora-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
