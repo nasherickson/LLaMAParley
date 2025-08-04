@@ -18,7 +18,15 @@ class LlamaService {
     static let shared = LlamaService()
     
     private let session = URLSession.shared
-    private let endpoint = URL(string: "http://100.83.122.44:11434")!
+    private var endpoint: URL {
+        // Fallback: take the first valid Config URL
+        for urlString in Config.ollamaURLs {
+            if let url = URL(string: urlString.replacingOccurrences(of: "/api/tags", with: "")) {
+                return url
+            }
+        }
+        fatalError("No valid Ollama endpoints in Config.swift")
+    }
     
     func sendPrompt(_ prompt: String, completion: @escaping (Result<String, Error>) -> Void) {
         var request = URLRequest(url: endpoint)

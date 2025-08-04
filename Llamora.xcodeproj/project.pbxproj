@@ -33,7 +33,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4022D3562E3FE07D003B4F83 /* Llamora-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Llamora-Info.plist"; sourceTree = "<group>"; };
 		4087836F2E160B8D006CD522 /* Llamora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Llamora.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4087837E2E160B8E006CD522 /* LlamoraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		408783882E160B8E006CD522 /* LlamoraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,7 +143,6 @@
 		408783662E160B8D006CD522 = {
 			isa = PBXGroup;
 			children = (
-				4022D3562E3FE07D003B4F83 /* Llamora-Info.plist */,
 				40E3405F2E315AAD003859E5 /* LlamaDBTest.swift */,
 				4097B46B2E2C0D3E0020142E /* Info.plist */,
 				4022D35C2E3FE2B6003B4F83 /* LLaMA */,

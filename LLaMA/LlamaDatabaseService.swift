@@ -18,7 +18,7 @@ final class LlamaDatabaseService {
         let sslContext = try! NIOSSLContext(configuration: .makeClientConfiguration())
         // 2. Set up Fluent's database config (use SQLPostgresConfiguration for FluentPostgresDriver)
         let postgresConfig = SQLPostgresConfiguration(
-            hostname: "100.83.122.44",
+            hostname: "192.168.0.152",
             port: 5432,
             username: "nasherickson",
             password: "ApolloCow1!",

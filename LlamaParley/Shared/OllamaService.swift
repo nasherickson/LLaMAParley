@@ -8,10 +8,22 @@ struct ChatMessage {
 func sendMessage(prompt: String, model: String = "llama3:70b", previousMessages: [ChatMessage] = []) async throws -> String {
     print("Sending to Ollama, model: \(model), prompt: \(prompt)")
     
-    // Example implementation for sending a message to the Ollama API
-    guard let url = URL(string: "http://100.83.122.44:11434/api/generate") else {
+    func buildOllamaURL(for endpoint: String) -> URL? {
+        for base in Config.ollamaURLs {
+            let candidate = base.replacingOccurrences(of: "/api/tags", with: "/api/\(endpoint)")
+            if let url = URL(string: candidate) {
+                return url
+            }
+        }
+        return nil
+    }
+
+    // Build URL
+    guard let url = buildOllamaURL(for: "generate") else {
         throw URLError(.badURL)
     }
+    
+    // Build request
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     let body: [String: Any] = [
@@ -22,7 +34,10 @@ func sendMessage(prompt: String, model: String = "llama3:70b", previousMessages:
     request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
+    // Send request
     let (data, _) = try await URLSession.shared.data(for: request)
+    
+    // Decode response
     let response = try JSONDecoder().decode([String: String].self, from: data)
     if let reply = response["reply"] {
         return reply
