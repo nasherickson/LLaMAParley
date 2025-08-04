@@ -2,10 +2,8 @@ import Foundation
 
 struct Config {
     static let ollamaURLs: [String] = [
-        "http://127.0.0.1:11434/api/tags",
         "http://MiniNAS.local:11434/api/tags",
         "http://192.168.0.152:11434/api/tags"
-    
     ]
 }
 //

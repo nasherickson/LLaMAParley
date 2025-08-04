@@ -37,13 +37,6 @@
 				<key>NSIncludesSubdomains </key>
 				<true/>
 			</dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
 			<key>100.83.122.44</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -60,6 +53,15 @@
 			</dict>
 			<key>NSExceptionAllowsInsecureHTTPLoads</key>
 			<true/>
+			<key>New item</key>
+			<string></string>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>NSIncludesSubdomains </key>
 			<true/>
 			<key>NSAllowsArbitraryLoads</key>
