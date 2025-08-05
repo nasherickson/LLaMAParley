@@ -5,14 +5,20 @@
 //  Created by Nash Erickson on 7/4/25.
 //
 
-//
-//  LlamaService.swift
-//  LlamaParley
-//
-//  Created by Nash Erickson on 7/4/25.
-//
-
 import Foundation
+
+struct LlamaResponse: Codable {
+    let model: String?
+    let response: String?
+    let done: Bool?
+    
+    // Some responses may have text instead of "response"
+    let text: String?
+    
+    var combinedText: String {
+        return response ?? text ?? ""
+    }
+}
 
 class LlamaService {
     static let shared = LlamaService()
@@ -55,9 +61,22 @@ class LlamaService {
                 return
             }
             do {
+                if let raw = String(data: data, encoding: .utf8) {
+                    print("🔍 Raw Ollama response: \(raw)")
+                } else {
+                    print("⚠️ Unable to decode response as UTF-8 string")
+                }
+                
                 let decoded = try JSONDecoder().decode(LlamaResponse.self, from: data)
-                completion(.success(decoded.text))
+                // Pass reply back
+                completion(.success(decoded.combinedText))
+                
+                // Speak reply if speech is enabled
+                if UserDefaults.standard.bool(forKey: "isSpeechEnabled") {
+                    TextToSpeech.shared.speak(decoded.combinedText)
+                }
             } catch {
+                print("❌ Decoding failed: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
