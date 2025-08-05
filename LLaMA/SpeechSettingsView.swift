@@ -1,8 +1,9 @@
 import SwiftUI
+import AVFoundation
 
-struct SpeechSettingsView: View {
-    @AppStorage("speechRate") private var speechRate: Float = 0.45
-    @AppStorage("speechPitch") private var speechPitch: Float = 1.0
+struct SpeechSettingsPanel: View {
+    @AppStorage("speechRate") private var speechRate: Double = 0.45
+    @AppStorage("speechPitch") private var speechPitch: Double = 1.0
     @AppStorage("speechPreDelay") private var speechPreDelay: Double = 0.1
     @AppStorage("speechPostDelay") private var speechPostDelay: Double = 0.2
     
@@ -33,8 +34,8 @@ struct SpeechSettingsView: View {
             Section {
                 Button("Test Voice") {
                     let cadence = SpeechCadence(
-                        rate: speechRate,
-                        pitch: speechPitch,
+                        rate: Float(speechRate),
+                        pitch: Float(speechPitch),
                         preDelay: speechPreDelay,
                         postDelay: speechPostDelay
                     )

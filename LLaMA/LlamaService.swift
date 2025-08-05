@@ -7,19 +7,6 @@
 
 import Foundation
 
-struct LlamaResponse: Codable {
-    let model: String?
-    let response: String?
-    let done: Bool?
-    
-    // Some responses may have text instead of "response"
-    let text: String?
-    
-    var combinedText: String {
-        return response ?? text ?? ""
-    }
-}
-
 class LlamaService {
     static let shared = LlamaService()
     
@@ -63,17 +50,26 @@ class LlamaService {
             do {
                 if let raw = String(data: data, encoding: .utf8) {
                     print("🔍 Raw Ollama response: \(raw)")
+                    
+                    let lines = raw.split(separator: "\n")
+                    var fullText = ""
+                    
+                    for line in lines {
+                        if let lineData = line.data(using: .utf8),
+                           let decoded = try? JSONDecoder().decode(LlamaResponse.self, from: lineData) {
+                            fullText += decoded.combinedText
+                        }
+                    }
+                    
+                    completion(.success(fullText))
+                    
+                    // Speak reply if speech is enabled
+                    if UserDefaults.standard.bool(forKey: "isSpeechEnabled") {
+                        TextToSpeech.shared.speak(fullText)
+                    }
                 } else {
                     print("⚠️ Unable to decode response as UTF-8 string")
-                }
-                
-                let decoded = try JSONDecoder().decode(LlamaResponse.self, from: data)
-                // Pass reply back
-                completion(.success(decoded.combinedText))
-                
-                // Speak reply if speech is enabled
-                if UserDefaults.standard.bool(forKey: "isSpeechEnabled") {
-                    TextToSpeech.shared.speak(decoded.combinedText)
+                    completion(.failure(NSError(domain: "LlamaService", code: -2, userInfo: [NSLocalizedDescriptionKey: "Invalid UTF-8 response."])))
                 }
             } catch {
                 print("❌ Decoding failed: \(error.localizedDescription)")
