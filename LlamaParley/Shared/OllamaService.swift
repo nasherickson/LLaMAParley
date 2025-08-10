@@ -1,11 +1,22 @@
+
 import Foundation
+
+enum ModelConfig {
+    static var defaultModel: String {
+        if let env = ProcessInfo.processInfo.environment["OLLAMA_MODEL"], !env.isEmpty {
+            return env
+        }
+        return UserDefaults.standard.string(forKey: "OLLAMA_MODEL")
+            ?? "llama3.1:8b-instruct-q4_K_M"
+    }
+}
 
 struct ChatMessage {
     let role: String
     let content: String
 }
 
-func sendMessage(prompt: String, model: String = "llama3:70b", previousMessages: [ChatMessage] = []) async throws -> String {
+func sendMessage(prompt: String, model: String = ModelConfig.defaultModel, previousMessages: [ChatMessage] = []) async throws -> String {
     print("Sending to Ollama, model: \(model), prompt: \(prompt)")
     
     func buildOllamaURL(for endpoint: String) -> URL? {
