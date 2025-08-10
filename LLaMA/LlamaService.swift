@@ -27,7 +27,7 @@ class LlamaService {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let requestBody: [String: Any] = [
-            "model": "llama2",   // adjust your model name here
+            "model": "llama3.1:8b-instruct-q4_K_M",   // adjust your model name here
             "prompt": prompt
         ]
         
