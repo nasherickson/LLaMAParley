@@ -7,6 +7,7 @@
 import SwiftUI
 import SwiftData
 import Foundation
+import AVFoundation
 
 struct ChatView: View {
     var conversation: Conversation
@@ -14,6 +15,10 @@ struct ChatView: View {
     @State private var isSending: Bool = false
     @Environment(\.modelContext) private var modelContext
     @Query private var allMessages: [Message]
+    @State private var isListening: Bool = false
+    @State private var dictation = AutoDictationCoordinator()
+    private let tts = TTS()
+    private var router = AgentRouter()
     
     var body: some View {
         let messages = allMessages.filter { $0.conversation == conversation }
@@ -50,6 +55,12 @@ struct ChatView: View {
             }
             .padding()
             HStack {
+                Button {
+                    toggleListening()
+                } label: {
+                    Image(systemName: isListening ? "mic.fill" : "mic")
+                }
+                .buttonStyle(.bordered)
                 TextField("Type a message…", text: $messageText)
                     .textFieldStyle(.roundedBorder)
                     .disabled(isSending)
@@ -61,29 +72,37 @@ struct ChatView: View {
             }
             .padding()
         }
+        .onAppear {
+            dictation.onFinalizedUtterance = { utterance in
+                Task { await sendMessage(utterance) }
+            }
+        }
     }
 
-    func sendMessage() async {
-        guard !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+    func sendMessage(_ overrideText: String? = nil) async {
+        let raw = (overrideText ?? messageText).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !raw.isEmpty else { return }
         let userMessage = Message(
-            text: messageText,
+            text: raw,
             isUser: true,
             conversation: conversation
         )
         modelContext.insert(userMessage)
-        let prompt = messageText
+        let prompt = raw
         messageText = ""
         isSending = true
         do {
             let messages = allMessages.filter { $0.conversation == conversation }
             let chatHistory = messages.map { ChatMessage(role: $0.isUser ? "user" : "assistant", content: $0.text) }
-            let ollamaResponse = try await Llamora.sendMessage(prompt: prompt, previousMessages: chatHistory)
+            let agent = router.choose(for: prompt)
+            let ollamaResponse = try await Llamora.sendMessage(prompt: prompt, model: agent.model, previousMessages: chatHistory)
             let assistantMessage = Message(
                 text: ollamaResponse,
                 isUser: false,
                 conversation: conversation
             )
             modelContext.insert(assistantMessage)
+            tts.speak(ollamaResponse, with: agent.voice)
         } catch {
             let errorMessage = Message(
                 text: "[Error from Ollama: \(error.localizedDescription)]",
@@ -93,6 +112,23 @@ struct ChatView: View {
             modelContext.insert(errorMessage)
         }
         isSending = false
+    }
+
+    private func toggleListening() {
+        if isListening {
+            dictation.stop()
+            isListening = false
+        } else {
+            try? dictation.start()
+            isListening = true
+        }
+    }
+
+    private func stripWakeWord(_ text: String, wake: String?) -> String {
+        guard let w = wake?.lowercased() else { return text }
+        let lower = text.lowercased()
+        if lower.hasPrefix(w + " ") { return String(text.dropFirst(w.count + 1)) }
+        return text
     }
 }
 

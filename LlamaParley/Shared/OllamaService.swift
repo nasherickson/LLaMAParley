@@ -15,6 +15,42 @@ struct ChatMessage {
     let content: String
 }
 
+// Keep track of models we've already warmed in this process
+fileprivate var warmedModels = Set<String>()
+
+fileprivate func warmUpModelIfNeeded(_ model: String, using urls: [URL]) async {
+    guard !warmedModels.contains(model) else { return }
+
+    // Longer timeouts just for warmup
+    let cfg = URLSessionConfiguration.default
+    cfg.timeoutIntervalForRequest = 60
+    cfg.timeoutIntervalForResource = 75
+    let session = URLSession(configuration: cfg)
+
+    for warmURL in urls {
+        var req = URLRequest(url: warmURL)
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body: [String: Any] = [
+            "model": model,
+            "prompt": " ",
+            "stream": false,
+            "keep_alive": "30m"
+        ]
+        req.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        do {
+            _ = try await session.data(for: req)
+            warmedModels.insert(model)
+            print("OLLAMA warmup complete for \(model) on \(warmURL.absoluteString)")
+            return
+        } catch {
+            print("OLLAMA warmup on \(warmURL.absoluteString) failed → \(error.localizedDescription)")
+            continue
+        }
+    }
+}
+
 func sendMessage(prompt: String, model: String = ModelConfig.defaultModel, previousMessages: [ChatMessage] = []) async throws -> String {
     print("Sending to Ollama, model: \(model), prompt: \(prompt)")
     
@@ -72,11 +108,19 @@ func sendMessage(prompt: String, model: String = ModelConfig.defaultModel, previ
     let urls = candidateURLs(for: endpoint)
     print("OLLAMA → candidates:", urls.map { $0.absoluteString })
 
-    // Prepare a short-timeout session so we fail fast instead of hanging
-    let config = URLSessionConfiguration.default
-    config.timeoutIntervalForRequest = 8
-    config.timeoutIntervalForResource = 12
-    let session = URLSession(configuration: config)
+    await warmUpModelIfNeeded(model, using: candidateURLs(for: "generate"))
+
+    func makeSession(long: Bool) -> URLSession {
+        let cfg = URLSessionConfiguration.default
+        if long {
+            cfg.timeoutIntervalForRequest = 60
+            cfg.timeoutIntervalForResource = 75
+        } else {
+            cfg.timeoutIntervalForRequest = 8
+            cfg.timeoutIntervalForResource = 12
+        }
+        return URLSession(configuration: cfg)
+    }
 
     var lastError: Error?
 
@@ -94,37 +138,55 @@ func sendMessage(prompt: String, model: String = ModelConfig.defaultModel, previ
                 let body: [String: Any] = [
                     "model": model,
                     "messages": messages,
-                    "stream": false
+                    "stream": false,
+                    "keep_alive": "30m"
                 ]
                 request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
             } else {
                 let body: [String: Any] = [
                     "model": model,
                     "prompt": prompt,
-                    "stream": false
+                    "stream": false,
+                    "keep_alive": "30m"
                 ]
                 request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
             }
 
-            let (data, _) = try await session.data(for: request)
+            var attemptError: Error?
+            for attempt in 0..<2 {
+                let long = (attempt == 1)
+                let session = makeSession(long: long)
+                do {
+                    let (data, response) = try await session.data(for: request)
 
-            if useChat {
-                if let reply = try? JSONDecoder().decode(ChatResp.self, from: data).message?.content {
-                    return reply
-                }
-            } else {
-                if let reply = try? JSONDecoder().decode(GenerateResp.self, from: data).response {
-                    return reply
+                    if let http = response as? HTTPURLResponse, http.statusCode == 499 {
+                        throw URLError(.timedOut)
+                    }
+
+                    if useChat {
+                        if let reply = try? JSONDecoder().decode(ChatResp.self, from: data).message?.content {
+                            return reply
+                        }
+                    } else {
+                        if let reply = try? JSONDecoder().decode(GenerateResp.self, from: data).response {
+                            return reply
+                        }
+                    }
+
+                    if let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                       let err = obj["error"] as? String {
+                        throw NSError(domain: "OllamaAPI", code: -2, userInfo: [NSLocalizedDescriptionKey: err])
+                    }
+
+                    throw NSError(domain: "OllamaAPI", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response payload"]) 
+                } catch {
+                    attemptError = error
+                    print("OLLAMA request to \(url) \(long ? "(retry-long)" : "(short)") failed →", error.localizedDescription)
+                    continue
                 }
             }
-
-            // As a fallback, try to parse generic error to improve diagnostics
-            if let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-               let err = obj["error"] as? String {
-                throw NSError(domain: "OllamaAPI", code: -2, userInfo: [NSLocalizedDescriptionKey: err])
-            }
-
-            throw NSError(domain: "OllamaAPI", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response payload"])
+            lastError = attemptError
+            continue
         } catch {
             print("OLLAMA request to \(url) failed →", error.localizedDescription)
             lastError = error
