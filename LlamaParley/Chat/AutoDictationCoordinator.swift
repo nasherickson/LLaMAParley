@@ -16,15 +16,15 @@ final class AutoDictationCoordinator {
     private var task: SFSpeechRecognitionTask?
     private var lastSpeechAt = Date()
     private let silenceMs = 900  // tweakable
+    private var acceptingAudio = false
     
     var onFinalizedUtterance: (String) -> Void = { _ in }
 
-    func start() throws {
-        let input = audio.inputNode
-        let format = input.inputFormat(forBus: 0)
-
+    // Helper: Recreate the recognition task with the current request.
+    private func makeTask() {
+        task?.cancel(); task = nil
+        recognizer = SFSpeechRecognizer() // re-init in case locale/availability changed
         request.shouldReportPartialResults = true
-
         task = recognizer?.recognitionTask(with: request) { result, error in
             if let r = result {
                 self.lastSpeechAt = Date()
@@ -32,15 +32,37 @@ final class AutoDictationCoordinator {
                     self.onFinalizedUtterance(r.bestTranscription.formattedString)
                 }
             }
-            if error != nil { self.restart() }
+            if let err = error {
+                print("STT error: \(err.localizedDescription)")
+                self.restart()
+            }
         }
+    }
+
+    // Helper: Ensure audio engine is running.
+    private func ensureAudioRunning() {
+        if !audio.isRunning {
+            audio.prepare()
+            try? audio.start()
+        }
+    }
+
+    func start() throws {
+        let input = audio.inputNode
+        let format = input.inputFormat(forBus: 0)
+
+        request.shouldReportPartialResults = true
+        makeTask()
+        acceptingAudio = true
 
         input.installTap(onBus: 0, bufferSize: 2048, format: format) { buf, _ in
+            guard self.acceptingAudio else { return }
             self.request.append(buf)
             self.detectSilenceAndFinalize(buf)
         }
 
         audio.prepare()
+        lastSpeechAt = Date()
         try audio.start()
     }
 
@@ -52,22 +74,28 @@ final class AutoDictationCoordinator {
         vDSP_measqv(ch, 1, &sum, vDSP_Length(n))
         let rms = sqrt(sum)
         if rms < 0.001, Date().timeIntervalSince(lastSpeechAt) > Double(silenceMs) / 1000.0 {
-            // Ask Apple’s STT to flush — if no final already, synthesize one from bestPartial
+            acceptingAudio = false
             request.endAudio()
-            // Re-arm for the next utterance
+            // Re-arm for the next utterance: new request + new task.
+            task?.cancel(); task = nil
             self.request = SFSpeechAudioBufferRecognitionRequest()
             self.request.shouldReportPartialResults = true
-            self.restart()
+            self.makeTask()
+            lastSpeechAt = Date()
+            acceptingAudio = true
         }
     }
 
     private func restart() {
         task?.cancel(); task = nil
-        // You’d recreate the recognitionTask with the new request here (omitted for brevity)
+        makeTask()
+        ensureAudioRunning()
     }
 
     func stop() {
+        acceptingAudio = false
         audio.stop(); task?.cancel()
+        request.endAudio()
         audio.inputNode.removeTap(onBus: 0)
     }
 }

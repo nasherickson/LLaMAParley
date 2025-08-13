@@ -10,6 +10,9 @@ import Foundation
 import AVFoundation
 
 struct ChatView: View {
+    init(conversation: Conversation) {
+        self.conversation = conversation
+    }
     var conversation: Conversation
     @State private var messageText: String = ""
     @State private var isSending: Bool = false

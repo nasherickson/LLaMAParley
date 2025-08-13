@@ -5,6 +5,7 @@
 //  Created by Nash Erickson on 8/12/25.
 //
 
+import Foundation
 
 // Agent identity + behavior
 struct Agent: Identifiable, Codable, Hashable {
