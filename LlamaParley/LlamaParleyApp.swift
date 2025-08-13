@@ -44,13 +44,16 @@ struct LlamaParleyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            VStack {
-                Text(ollamaStatus)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .padding(.top, 4)
-                RootView()
-                    .modelContainer(sharedModelContainer)
+            ZStack {
+                GeometricBackground()
+                VStack {
+                    Text(ollamaStatus)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 4)
+                    ConversationsView()
+                        .modelContainer(sharedModelContainer)
+                }
             }
             .onAppear {
                 Task {

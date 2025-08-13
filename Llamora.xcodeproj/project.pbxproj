@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		403FE4222E4CDE6C008EA7C0 /* PostgresConnectionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403FE4212E4CDE6C008EA7C0 /* PostgresConnectionSource.swift */; };
 		4089B2D62E1D162D003A3FDD /* PostgresNIO in Frameworks */ = {isa = PBXBuildFile; productRef = 4089B2D52E1D162D003A3FDD /* PostgresNIO */; };
 		40E340602E315AF5003859E5 /* LlamaDBTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E3405F2E315AAD003859E5 /* LlamaDBTest.swift */; };
 		40F0EBE12E21649F00561383 /* Fluent in Frameworks */ = {isa = PBXBuildFile; productRef = 40F0EBE02E21649F00561383 /* Fluent */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		403FE4212E4CDE6C008EA7C0 /* PostgresConnectionSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostgresConnectionSource.swift; sourceTree = "<group>"; };
 		4087836F2E160B8D006CD522 /* Llamora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Llamora.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4087837E2E160B8E006CD522 /* LlamoraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		408783882E160B8E006CD522 /* LlamoraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +155,7 @@
 				402895FE2E1803DE00379FC1 /* LlamaParley */,
 				402896132E18060100379FC1 /* Tests */,
 				408783702E160B8D006CD522 /* Products */,
+				403FE4212E4CDE6C008EA7C0 /* PostgresConnectionSource.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -319,6 +322,7 @@
 				40F0EBE32E2164E100561383 /* LLaMAUser.swift in Sources */,
 				40E340602E315AF5003859E5 /* LlamaDBTest.swift in Sources */,
 				40F0EBED2E2292F600561383 /* Timeridle.swift in Sources */,
+				403FE4222E4CDE6C008EA7C0 /* PostgresConnectionSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

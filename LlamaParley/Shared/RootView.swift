@@ -1,84 +1,68 @@
 import SwiftUI
-import SwiftData
 
-struct RootView: View {
-    @State private var showSettings = false
-    @State private var selectedConversation: Conversation?
+struct ConversationsView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query var conversations: [Conversation]
+    @State private var conversations: [Conversation] = []
+    @State private var selectedConversation: Conversation?
+    @State private var hasLaunched = false
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                // Settings button at top right with high zIndex
-                HStack {
-                    Spacer()
-                    Button(action: { showSettings = true }) {
-                        Image(systemName: "gear")
-                            .resizable()
-                            .frame(width: 28, height: 28)
-                            .padding(8)
+        NavigationSplitView {
+            List(selection: $selectedConversation) {
+                ForEach(conversations) { conversation in
+                    NavigationLink(value: conversation) {
+                        ConversationRowView(conversation: conversation)
                     }
-                    .accessibilityLabel("Settings")
-                    
                 }
-                .padding(.top, 8)
-                .padding(.trailing, 12)
-                .zIndex(10)
-
-                // Background and main content
-                GeometricBackground()
-                    .edgesIgnoringSafeArea(.all)
-
-                if conversations.isEmpty {
-                    VStack(spacing: 16) {
-                        Spacer()
-                        Text("No conversations yet.")
-                            .font(.title2)
-                            .foregroundStyle(.ultraThinMaterial)
-                        Text("Tap the + button to start a new conversation.")
-                            .font(.body)
-                            .foregroundColor(.clear)
-                        Spacer()
-                    }
-                    .padding()
-                } else {
-                    HStack(spacing: 0) {
-                        ConversationListView(conversations: conversations, onSelect: { convo in
-                            selectedConversation = convo
-                        })
-                        .frame(width: geo.size.width * 0.3)
-                        .background(Color(UIColor.systemGroupedBackground))
-                        .border(Color.gray.opacity(0.02), width: 1)
-
-                        Divider()
-
-                        VStack(spacing: 0) {
-                            ConversationToolbar(onNewConversation: {
-                                // Add logic to create a new Conversation and select it
-                                let newConvo = Conversation(title: "New Chat", conversationDescription: "")
-                                modelContext.insert(newConvo)
-                                selectedConversation = newConvo
-                            })
-                            .padding()
-                            .background(.ultraThinMaterial.opacity(0.3))
-                            .border(Color.gray.opacity(0.02), width: 1)
-
-                            if let selectedConversation = selectedConversation {
-                                ChatView(conversation: selectedConversation)
-                                    .padding()
-                                    .background(.ultraThinMaterial.opacity(0.1))
-                            } else {
-                                EmptyView()
-                            }
-                        }
+                .onDelete(perform: deleteConversations)
+            }
+            .navigationTitle("Conversations")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        newConversation()
+                    } label: {
+                        Image(systemName: "plus")
                     }
                 }
             }
+            .onAppear {
+                if !hasLaunched {
+                    let newConvo = Conversation(title: "Welcome Back", conversationDescription: "")
+                    let greeting = LlamaService.shared.launchGreetingMessage()
+                    let message = Message(text: greeting, isUser: false, conversation: newConvo)
+                    newConvo.messages.append(message)
+                    modelContext.insert(newConvo)
+                    modelContext.insert(message)
+                    conversations.append(newConvo)
+                    selectedConversation = newConvo
+                    hasLaunched = true
+                }
+                // TODO: Fetch conversations from your data source.
+            }
+        } detail: {
+            if let selectedConversation {
+                ChatView(conversation: selectedConversation)
+            } else {
+                Text("Select a conversation")
+                    .foregroundStyle(.secondary)
+            }
         }
-        .sheet(isPresented: $showSettings) {
-            SpeechSettingsPanel()
+    }
+
+    private func newConversation() {
+        let conversation = Conversation(title: "", conversationDescription: "")
+        modelContext.insert(conversation)
+        conversations.append(conversation)
+        selectedConversation = conversation
+    }
+
+    private func deleteConversations(offsets: IndexSet) {
+        for index in offsets {
+            let conversation = conversations[index]
+            modelContext.delete(conversation)
         }
+        conversations.remove(atOffsets: offsets)
     }
 }
 
