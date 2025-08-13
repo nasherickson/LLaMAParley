@@ -105,7 +105,7 @@ struct ChatView: View {
                 conversation: conversation
             )
             modelContext.insert(assistantMessage)
-            tts.speak(ollamaResponse, with: agent.voice)
+            tts.speakSmooth(ollamaResponse, with: agent.voice, preferMale: true)
         } catch {
             let errorMessage = Message(
                 text: "[Error from Ollama: \(error.localizedDescription)]",
@@ -134,4 +134,3 @@ struct ChatView: View {
         return text
     }
 }
-

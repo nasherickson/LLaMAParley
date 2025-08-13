@@ -47,19 +47,50 @@ final class AutoDictationCoordinator {
         }
     }
 
+    // Configure AVAudioSession for iOS/Catalyst so input format is valid
+    private func configureSessionIfNeeded() throws {
+        #if os(iOS) || targetEnvironment(macCatalyst)
+        let session = AVAudioSession.sharedInstance()
+        try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetooth])
+        try session.setPreferredSampleRate(44100)
+        try session.setPreferredIOBufferDuration(0.02)
+        try session.setActive(true, options: [])
+        #endif
+    }
+
     func start() throws {
         let input = audio.inputNode
-        let format = input.inputFormat(forBus: 0)
+
+        // Ensure the session is configured/active on iOS/Catalyst BEFORE querying formats or installing the tap
+        try configureSessionIfNeeded()
 
         request.shouldReportPartialResults = true
         makeTask()
         acceptingAudio = true
 
-        input.installTap(onBus: 0, bufferSize: 2048, format: format) { buf, _ in
+        #if os(iOS) || targetEnvironment(macCatalyst)
+        // On iOS/Catalyst, use the node's OUTPUT format (valid, non-zero rate/channels)
+        var tapFormat = input.outputFormat(forBus: 0)
+        if tapFormat.sampleRate == 0 || tapFormat.channelCount == 0 {
+            // Fallback: let Core Audio choose the hardware format
+            tapFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1) ?? input.outputFormat(forBus: 0)
+        }
+        input.installTap(onBus: 0, bufferSize: 2048, format: tapFormat) { buf, _ in
             guard self.acceptingAudio else { return }
+            // Ignore zero-length buffers which can appear during interruptions
+            if buf.frameLength == 0 { return }
             self.request.append(buf)
             self.detectSilenceAndFinalize(buf)
         }
+        #else
+        // On macOS, passing nil lets the engine pick the correct hardware format safely
+        input.installTap(onBus: 0, bufferSize: 2048, format: nil) { buf, _ in
+            guard self.acceptingAudio else { return }
+            if buf.frameLength == 0 { return }
+            self.request.append(buf)
+            self.detectSilenceAndFinalize(buf)
+        }
+        #endif
 
         audio.prepare()
         lastSpeechAt = Date()

@@ -19,7 +19,7 @@ struct Agent: Identifiable, Codable, Hashable {
 }
 
 // Voice parameters you can tune live
-struct VoiceConfig: Codable, Hashable {
+public struct VoiceConfig: Codable, Hashable {
     var ttsProvider: String = "apple"    // "apple", "eleven", "azure", …
     var voiceId: String = "com.apple.voice.en-US.Allison"
     var rate: Float = 0.48               // 0.0…1.0 mapped to AVSpeech

@@ -1,65 +1,74 @@
+import Foundation
 import AVFoundation
-//
-//  TTS.swift
-//  Llamora
-//
-//  Created by Nash Erickson on 8/12/25.
-//
 
-
-final class TTS {
-    private let synth = AVSpeechSynthesizer()
-
-    func speak(_ text: String, with v: VoiceConfig) {
-        let utt = AVSpeechUtterance(string: text)
-
-        // Prefer user-specified voice if valid, otherwise choose a friendlier fallback.
-        let preferredIDs = [
-            // Common friendly en-US voices; we try several identifiers to maximize compatibility
-            "com.apple.ttsbundle.Samantha-compact",
-            "com.apple.ttsbundle.Ava-compact",
-            "com.apple.voice.compact.en-US.Samantha",
-            "com.apple.voice.compact.en-US.Ava",
-            "com.apple.voice.compact.en-US.Alex"
-        ]
-
-        let chosenVoice: AVSpeechSynthesisVoice? = {
-            if let idVoice = AVSpeechSynthesisVoice(identifier: v.voiceId) { return idVoice }
-            for id in preferredIDs {
-                if let voice = AVSpeechSynthesisVoice(identifier: id) { return voice }
-            }
-            return AVSpeechSynthesisVoice(language: "en-US")
-        }()
-
-        guard let voice = chosenVoice else {
-            print("Error: No available voice found. Listing installed voices:")
-            for voice in AVSpeechSynthesisVoice.speechVoices() {
-                print(" - id: \(voice.identifier), lang: \(voice.language)")
-            }
-            return
+public class TTS {
+    private let synthesizer = AVSpeechSynthesizer()
+    
+    public func speak(_ text: String, with v: VoiceConfig) {
+        let utterance = AVSpeechUtterance(string: text)
+        
+        var voice: AVSpeechSynthesisVoice?
+        if let foundVoice = AVSpeechSynthesisVoice(identifier: v.voiceId) {
+            voice = foundVoice
+        } else {
+            voice = AVSpeechSynthesisVoice(language: "en-US")
         }
-
-        utt.voice = voice
-        print("Using voice: id = \(voice.identifier), lang = \(voice.language)")
-
-        // Calmer, less eerie defaults. If v.rate/pitch come in as 0, treat as neutral.
-        let desiredRate = (v.rate == 0 ? 0.5 : v.rate).clamped(0.40, 0.60)
-        utt.rate = AVSpeechUtteranceDefaultSpeechRate * desiredRate
-
-        let desiredPitch = (v.pitch == 0 ? 1.0 : v.pitch).clamped(0.85, 1.15)
-        utt.pitchMultiplier = desiredPitch
-
-        // Small pauses help naturalness.
-        utt.preUtteranceDelay = 0.02
-        utt.postUtteranceDelay = 0.03
-
-        synth.speak(utt)
+        
+        utterance.voice = voice
+        utterance.rate = max(0.4, min(v.rate, 0.6))
+        utterance.pitchMultiplier = max(0.8, min(v.pitch, 1.2))
+        
+        synthesizer.speak(utterance)
     }
-
-    static func logAvailableVoices() {
-        for v in AVSpeechSynthesisVoice.speechVoices() {
-            print("Voice => id: \(v.identifier) lang: \(v.language)")
+    
+    public func speakSmooth(_ text: String, with v: VoiceConfig, preferMale: Bool = false) {
+        let targetLanguage = v.voiceId ?? "en-US"
+        let voices = AVSpeechSynthesisVoice.speechVoices()
+        
+        func isMaleVoice(_ voice: AVSpeechSynthesisVoice) -> Bool {
+            if #available(iOS 14.5, macOS 11.3, *) {
+                return voice.gender == .male
+            }
+            let maleNames = ["Alex", "Fred", "Daniel", "Tom", "John", "Mike", "Paul", "Mark", "Peter"]
+            return maleNames.contains(where: { voice.name.contains($0) })
         }
+        
+        var selectedVoice: AVSpeechSynthesisVoice?
+        
+        if preferMale {
+            selectedVoice = voices.first(where: { $0.language == targetLanguage && isMaleVoice($0) })
+        }
+        
+        if selectedVoice == nil {
+            let voiceId = v.voiceId
+            selectedVoice = AVSpeechSynthesisVoice(identifier: voiceId)
+            if selectedVoice == nil {
+                selectedVoice = AVSpeechSynthesisVoice(language: targetLanguage)
+            }
+        }
+        
+        if let voice = selectedVoice {
+            let genderString: String
+            if #available(iOS 14.5, macOS 11.3, *) {
+                let g = voice.gender
+                switch g {
+                case .male: genderString = "male"
+                case .female: genderString = "female"
+                case .unspecified: genderString = "unspecified"
+                @unknown default: genderString = "unknown"
+                }
+            } else {
+                genderString = "unknown"
+            }
+            print("Selected voice: name=\(voice.name), identifier=\(voice.identifier), gender=\(genderString)")
+        }
+        
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = selectedVoice
+        utterance.rate = max(0.3, min(v.rate, 0.8))
+        utterance.pitchMultiplier = max(0.5, min(v.pitch, 2.0))
+        
+        synthesizer.speak(utterance)
     }
 }
-extension Float { func clamped(_ a: Float,_ b: Float) -> Float { max(a, min(b, self)) } }
+
