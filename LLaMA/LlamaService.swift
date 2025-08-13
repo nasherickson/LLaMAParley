@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 private let OLLAMA_BASE_URL = URL(string: "http://minions.local:11434")!
 
@@ -24,11 +25,96 @@ class LlamaService {
     private var chatEndpoint: URL { OLLAMA_BASE_URL.appendingPathComponent("/api/chat") }
     private var tagsEndpoint: URL { OLLAMA_BASE_URL.appendingPathComponent("/api/tags") }
     
+    func sendPrompt(_ prompt: String, for conversation: Conversation, completion: @escaping (Result<String, Error>) -> Void) {
+        // Optional warmup: non-blocking probe to help DNS/socket warmup
+        var probe = URLRequest(url: tagsEndpoint)
+        probe.timeoutInterval = 2
+        session.dataTask(with: probe).resume()
+    
+        // Update conversation with the latest user focus (lean, event-driven)
+        conversation.lastWorkSummary = WorkSummary.lineFromUser(prompt)
+        conversation.lastActiveAt = Date()
+        try? conversation.modelContext?.save()
+        WorkSummary.setGlobal(conversation.lastWorkSummary)
+    
+        var request = URLRequest(url: chatEndpoint)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 10
+    
+        let requestBody: [String: Any] = [
+            "model": "llama3.1:8b-instruct-q4_K_M",   // adjust your model name here
+            "messages": [["role": "user", "content": prompt]],
+            "stream": true
+        ]
+    
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+        } catch {
+            DispatchQueue.main.async { completion(.failure(error)) }
+            return
+        }
+        
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async { completion(.failure(error)) }
+                return
+            }
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(.failure(NSError(domain: "LlamaService", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received."])))
+                }
+                return
+            }
+            do {
+                if let raw = String(data: data, encoding: .utf8) {
+                    print("🔍 Ollama stream: \(raw)")
+                    
+                    let lines = raw.split(separator: "\n")
+                    var fullText = ""
+                    
+                    for line in lines {
+                        if let lineData = line.data(using: .utf8),
+                           let decoded = try? JSONDecoder().decode(LlamaResponse.self, from: lineData) {
+                            fullText += decoded.combinedText
+                        }
+                    }
+                    
+                    // Update conversation with assistant's latest "next step" summary
+                    conversation.lastWorkSummary = WorkSummary.lineFromAssistant(fullText)
+                    conversation.lastActiveAt = Date()
+                    try? conversation.modelContext?.save()
+                    WorkSummary.setGlobal(conversation.lastWorkSummary)
+                    
+                    DispatchQueue.main.async {
+                        completion(.success(fullText))
+                        if UserDefaults.standard.bool(forKey: "isSpeechEnabled") {
+                            TextToSpeech.shared.speak(fullText)
+                        }
+                    }
+                } else {
+                    print("⚠️ Unable to decode response as UTF-8 string")
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "LlamaService", code: -2, userInfo: [NSLocalizedDescriptionKey: "Invalid UTF-8 response."])))
+                    }
+                }
+            } catch {
+                print("❌ Decoding failed: \(error.localizedDescription)")
+                DispatchQueue.main.async { completion(.failure(error)) }
+            }
+        }
+        task.resume()
+    }
+
+    @available(*, deprecated, message: "Use sendPrompt(_:for:completion:) so we can track lastWorkSummary/lastActiveAt per conversation.")
     func sendPrompt(_ prompt: String, completion: @escaping (Result<String, Error>) -> Void) {
         // Optional warmup: non-blocking probe to help DNS/socket warmup
         var probe = URLRequest(url: tagsEndpoint)
         probe.timeoutInterval = 2
         session.dataTask(with: probe).resume()
+
+        // Update global one-liner based on the user's prompt (no per-convo context here)
+        WorkSummary.setGlobal(WorkSummary.lineFromUser(prompt))
 
         var request = URLRequest(url: chatEndpoint)
         request.httpMethod = "POST"
@@ -73,6 +159,9 @@ class LlamaService {
                         }
                     }
                     
+                    // Mirror assistant reply to the global one-liner for legacy callers
+                    WorkSummary.setGlobal(WorkSummary.lineFromAssistant(fullText))
+                    
                     DispatchQueue.main.async {
                         completion(.success(fullText))
                         if UserDefaults.standard.bool(forKey: "isSpeechEnabled") {
@@ -93,3 +182,21 @@ class LlamaService {
         task.resume()
     }
 }
+// MARK: - Last Work Summary (lean, event-driven)
+enum WorkSummary {
+    static func setGlobal(_ text: String?) {
+        UserDefaults.standard.setValue(text, forKey: "lastWorkSummary")
+    }
+    // Back-compat alias if older code used .set(...)
+    static func set(_ text: String?) { setGlobal(text) }
+
+    static func lineFromAssistant(_ text: String) -> String {
+        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return "Next step noted: " + t.prefix(160)
+    }
+    static func lineFromUser(_ text: String) -> String {
+        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return "You were focusing on: " + t.prefix(160)
+    }
+}
+

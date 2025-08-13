@@ -51,7 +51,13 @@ fileprivate func warmUpModelIfNeeded(_ model: String, using urls: [URL]) async {
     }
 }
 
-func sendMessage(prompt: String, model: String = ModelConfig.defaultModel, previousMessages: [ChatMessage] = []) async throws -> String {
+func sendMessage(
+    prompt: String,
+    model: String = ModelConfig.defaultModel,
+    previousMessages: [ChatMessage] = [],
+    onUserPrompt: ((String) -> Void)? = nil,
+    onAssistantReply: ((String) -> Void)? = nil
+) async throws -> String {
     print("Sending to Ollama, model: \(model), prompt: \(prompt)")
     
     struct GenerateResp: Decodable { let response: String? }
@@ -135,6 +141,7 @@ func sendMessage(prompt: String, model: String = ModelConfig.defaultModel, previ
             if useChat {
                 var messages = previousMessages.map { ["role": $0.role, "content": $0.content] }
                 messages.append(["role": "user", "content": prompt])
+                onUserPrompt?(prompt)
                 let body: [String: Any] = [
                     "model": model,
                     "messages": messages,
@@ -143,6 +150,7 @@ func sendMessage(prompt: String, model: String = ModelConfig.defaultModel, previ
                 ]
                 request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
             } else {
+                onUserPrompt?(prompt)
                 let body: [String: Any] = [
                     "model": model,
                     "prompt": prompt,
@@ -165,10 +173,12 @@ func sendMessage(prompt: String, model: String = ModelConfig.defaultModel, previ
 
                     if useChat {
                         if let reply = try? JSONDecoder().decode(ChatResp.self, from: data).message?.content {
+                            onAssistantReply?(reply)
                             return reply
                         }
                     } else {
                         if let reply = try? JSONDecoder().decode(GenerateResp.self, from: data).response {
+                            onAssistantReply?(reply)
                             return reply
                         }
                     }

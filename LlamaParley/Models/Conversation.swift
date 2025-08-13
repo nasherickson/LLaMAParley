@@ -14,13 +14,23 @@ final class Conversation: Identifiable {
     var details: String
     var messages: [Message]
     var createdAt: Date
+    var lastWorkSummary: String?
+    var lastActiveAt: Date?
     
-    init(title: String, conversationDescription: String, details: String = "", messages: [Message] = [], createdAt: Date = Date()) {
+    init(title: String,
+         conversationDescription: String,
+         details: String = "",
+         messages: [Message] = [],
+         createdAt: Date = Date(),
+         lastWorkSummary: String? = nil,
+         lastActiveAt: Date? = nil) {
         self.id = UUID()
         self.title = title
         self.conversationDescription = conversationDescription
         self.details = details
         self.messages = messages
         self.createdAt = createdAt
+        self.lastWorkSummary = lastWorkSummary
+        self.lastActiveAt = lastActiveAt ?? createdAt
     }
 }
