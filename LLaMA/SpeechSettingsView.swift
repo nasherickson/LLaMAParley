@@ -2,6 +2,8 @@ import SwiftUI
 import AVFoundation
 
 struct SpeechSettingsPanel: View {
+    @AppStorage("isSpeechEnabled") private var isSpeechEnabled: Bool = false
+    @AppStorage("masculineVoice") private var masculineVoice: Bool = false
     @AppStorage("speechRate") private var speechRate: Double = 0.45
     @AppStorage("speechPitch") private var speechPitch: Double = 1.0
     @AppStorage("speechPreDelay") private var speechPreDelay: Double = 0.1
@@ -9,6 +11,14 @@ struct SpeechSettingsPanel: View {
     
     var body: some View {
         Form {
+            Section {
+                Toggle("Speak Responses Aloud", isOn: $isSpeechEnabled)
+            }
+            
+            Section {
+                Toggle("Masculine Voice", isOn: $masculineVoice)
+            }
+            
             Section(header: Text("Speech Cadence")) {
                 VStack(alignment: .leading) {
                     Text("Rate: \(String(format: "%.2f", speechRate))")
@@ -18,6 +28,7 @@ struct SpeechSettingsPanel: View {
                 VStack(alignment: .leading) {
                     Text("Pitch: \(String(format: "%.2f", speechPitch))")
                     Slider(value: $speechPitch, in: 0.5...2.0, step: 0.05)
+                        .disabled(masculineVoice)
                 }
                 
                 VStack(alignment: .leading) {
@@ -35,7 +46,7 @@ struct SpeechSettingsPanel: View {
                 Button("Test Voice") {
                     let cadence = SpeechCadence(
                         rate: Float(speechRate),
-                        pitch: Float(speechPitch),
+                        pitch: masculineVoice ? 0.8 : Float(speechPitch),
                         preDelay: speechPreDelay,
                         postDelay: speechPostDelay
                     )
@@ -52,4 +63,5 @@ struct SpeechSettingsPanel: View {
 //
 //  Created by Nash Erickson on 8/4/25.
 //
+
 
