@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		403FE4222E4CDE6C008EA7C0 /* PostgresConnectionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403FE4212E4CDE6C008EA7C0 /* PostgresConnectionSource.swift */; };
 		4089B2D62E1D162D003A3FDD /* PostgresNIO in Frameworks */ = {isa = PBXBuildFile; productRef = 4089B2D52E1D162D003A3FDD /* PostgresNIO */; };
 		40E340602E315AF5003859E5 /* LlamaDBTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E3405F2E315AAD003859E5 /* LlamaDBTest.swift */; };
 		40F0EBE12E21649F00561383 /* Fluent in Frameworks */ = {isa = PBXBuildFile; productRef = 40F0EBE02E21649F00561383 /* Fluent */; };
@@ -34,7 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		403FE4212E4CDE6C008EA7C0 /* PostgresConnectionSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostgresConnectionSource.swift; sourceTree = "<group>"; };
+		403FE4F82E4D3F43008EA7C0 /* LlamoraKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4087836F2E160B8D006CD522 /* Llamora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Llamora.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4087837E2E160B8E006CD522 /* LlamoraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		408783882E160B8E006CD522 /* LlamoraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LlamoraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +114,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		403FE4F52E4D3F43008EA7C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4087836C2E160B8D006CD522 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -155,7 +161,6 @@
 				402895FE2E1803DE00379FC1 /* LlamaParley */,
 				402896132E18060100379FC1 /* Tests */,
 				408783702E160B8D006CD522 /* Products */,
-				403FE4212E4CDE6C008EA7C0 /* PostgresConnectionSource.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -165,6 +170,7 @@
 				4087836F2E160B8D006CD522 /* Llamora.app */,
 				4087837E2E160B8E006CD522 /* LlamoraTests.xctest */,
 				408783882E160B8E006CD522 /* LlamoraUITests.xctest */,
+				403FE4F82E4D3F43008EA7C0 /* LlamoraKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -172,6 +178,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		403FE4F72E4D3F43008EA7C0 /* LlamoraKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 403FE5022E4D3F43008EA7C0 /* Build configuration list for PBXNativeTarget "LlamoraKitTests" */;
+			buildPhases = (
+				403FE4F42E4D3F43008EA7C0 /* Sources */,
+				403FE4F52E4D3F43008EA7C0 /* Frameworks */,
+				403FE4F62E4D3F43008EA7C0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LlamoraKitTests;
+			packageProductDependencies = (
+			);
+			productName = LlamoraKitTests;
+			productReference = 403FE4F82E4D3F43008EA7C0 /* LlamoraKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4087836E2E160B8D006CD522 /* Llamora */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 408783922E160B8E006CD522 /* Build configuration list for PBXNativeTarget "Llamora" */;
@@ -248,9 +273,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					403FE4F72E4D3F43008EA7C0 = {
+						CreatedOnToolsVersion = 26.0;
+					};
 					4087836E2E160B8D006CD522 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -286,11 +314,19 @@
 				4087836E2E160B8D006CD522 /* Llamora */,
 				4087837D2E160B8E006CD522 /* LlamoraTests */,
 				408783872E160B8E006CD522 /* LlamoraUITests */,
+				403FE4F72E4D3F43008EA7C0 /* LlamoraKitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		403FE4F62E4D3F43008EA7C0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4087836D2E160B8D006CD522 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -315,6 +351,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		403FE4F42E4D3F43008EA7C0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4087836B2E160B8D006CD522 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -322,7 +365,6 @@
 				40F0EBE32E2164E100561383 /* LLaMAUser.swift in Sources */,
 				40E340602E315AF5003859E5 /* LlamaDBTest.swift in Sources */,
 				40F0EBED2E2292F600561383 /* Timeridle.swift in Sources */,
-				403FE4222E4CDE6C008EA7C0 /* PostgresConnectionSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +398,44 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		403FE5032E4D3F43008EA7C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5GS6QPBM24;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = eitops.Archer.AutoChatGPTAlpha.LlamoraKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		403FE5042E4D3F43008EA7C0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5GS6QPBM24;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = eitops.Archer.AutoChatGPTAlpha.LlamoraKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		408783902E160B8E006CD522 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -612,6 +692,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		403FE5022E4D3F43008EA7C0 /* Build configuration list for PBXNativeTarget "LlamoraKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				403FE5032E4D3F43008EA7C0 /* Debug */,
+				403FE5042E4D3F43008EA7C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4087836A2E160B8D006CD522 /* Build configuration list for PBXProject "Llamora" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
